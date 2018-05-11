@@ -3,19 +3,16 @@
 namespace app\modules\admin\controllers;
 
 use Yii;
-use app\models\News;
-use app\modules\admin\models\NewsSearch;
 use app\models\Category;
+use app\modules\admin\models\CategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use dektrium\user\models\User;
-use yii\filters\AccessControl;
-use dektrium\user\filters\AccessRule;
+
 /**
- * NewsController implements the CRUD actions for News model.
+ * CategoryController implements the CRUD actions for Category model.
  */
-class NewsController extends Controller
+class CategoryController extends Controller
 {
     /**
      * @inheritdoc
@@ -29,33 +26,16 @@ class NewsController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'ruleConfig' => [
-                    'class' => AccessRule::className(),
-                ],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['switch'],
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'allow' => true,
-                        'roles' => ['admin'],
-                    ],
-                ],
-            ],
         ];
     }
 
     /**
-     * Lists all News models.
+     * Lists all Category models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new NewsSearch();
+        $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -65,7 +45,7 @@ class NewsController extends Controller
     }
 
     /**
-     * Displays a single News model.
+     * Displays a single Category model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -78,29 +58,25 @@ class NewsController extends Controller
     }
 
     /**
-     * Creates a new News model.
+     * Creates a new Category model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new News();
+        $model = new Category();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->user_id = Yii::$app->user->id;
-            if($model->save()){
-              return $this->redirect(['view', 'id' => $model->id]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
-        $categories = Category::find()->select(['name', 'id'])->indexBy('id')->column();
+
         return $this->render('create', [
             'model' => $model,
-            'categories' => $categories,
         ]);
     }
 
     /**
-     * Updates an existing News model.
+     * Updates an existing Category model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -110,21 +86,17 @@ class NewsController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->user_id = Yii::$app->user->id;
-            if($model->save()){
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-            }
         }
-        $categories = Category::find()->select(['name', 'id'])->indexBy('id')->column();
+
         return $this->render('update', [
             'model' => $model,
-            'categories' => $categories,
         ]);
     }
 
     /**
-     * Deletes an existing News model.
+     * Deletes an existing Category model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -138,15 +110,15 @@ class NewsController extends Controller
     }
 
     /**
-     * Finds the News model based on its primary key value.
+     * Finds the Category model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return News the loaded model
+     * @return Category the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = News::findOne($id)) !== null) {
+        if (($model = Category::findOne($id)) !== null) {
             return $model;
         }
 

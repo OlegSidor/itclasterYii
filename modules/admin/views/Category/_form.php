@@ -2,21 +2,17 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\ActiveField;
+
 /* @var $this yii\web\View */
-/* @var $model app\models\News */
+/* @var $model app\models\Category */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="news-form">
+<div class="category-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
-    <?=$form->field($model, 'category_id')->dropdownList($categories)?>
-
-    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
