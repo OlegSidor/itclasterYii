@@ -41,7 +41,7 @@ class NewsSearch extends News
      */
     public function search($params)
     {
-        $query = News::find();
+        $query = News::find()->with(['user','category']);
 
         // add conditions that should always apply here
 
