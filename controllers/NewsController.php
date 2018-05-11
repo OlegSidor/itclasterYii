@@ -11,7 +11,7 @@ class NewsController extends \yii\web\Controller
       $query = News::find();
 
       $pagination = new Pagination([
-        'defaultPageSize' => 2,
+        'defaultPageSize' => 4,
         'totalCount' => $query->count(),
       ]);
 

@@ -56,8 +56,4 @@ class News extends \yii\db\ActiveRecord
   {
       return $this->hasOne(User::className(), ['id' => 'user_id']);
   }
-  public function getCreator()
-  {
-    return User::findOne(1)->username;
-  }
 }
