@@ -6,6 +6,8 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\News;
+use app\models\Category;
+use dektrium\user\models\User;
 
 /**
  * NewsSearch represents the model behind the search form of `app\models\News`.
@@ -18,8 +20,8 @@ class NewsSearch extends News
     public function rules()
     {
         return [
-            [['id','user_id'], 'integer'],
-            [['title', 'content'], 'safe'],
+          ['id', 'integer'],
+          [['title', 'content','category_id','user_id'], 'safe'],
         ];
     }
 
@@ -42,7 +44,8 @@ class NewsSearch extends News
     public function search($params)
     {
         $query = News::find()->with(['user','category']);
-
+        $query->joinWith(['category']);
+        $query->joinWith(['user']);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -61,9 +64,10 @@ class NewsSearch extends News
         $query->andFilterWhere([
             'id' => $this->id,
         ]);
-
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'content', $this->content]);
+            ->andFilterWhere(['like', 'content', $this->content])
+            ->andFilterWhere(['like', 'category.name', $this->category_id])
+            ->andFilterWhere(['like', 'user.username', $this->user_id]);
 
         return $dataProvider;
     }
