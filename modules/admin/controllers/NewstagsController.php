@@ -3,20 +3,17 @@
 namespace app\modules\admin\controllers;
 
 use Yii;
-use app\models\News;
-use app\modules\admin\models\NewsSearch;
-use app\models\Category;
 use app\models\Newstags;
+use app\models\News;
+use app\modules\admin\models\NewstagsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use dektrium\user\models\User;
-use yii\filters\AccessControl;
-use dektrium\user\filters\AccessRule;
+
 /**
- * NewsController implements the CRUD actions for News model.
+ * NewstagsController implements the CRUD actions for Newstags model.
  */
-class NewsController extends Controller
+class NewstagsController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,44 +27,27 @@ class NewsController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'ruleConfig' => [
-                    'class' => AccessRule::className(),
-                ],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['switch'],
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'allow' => true,
-                        'roles' => ['admin'],
-                    ],
-                ],
-            ],
         ];
     }
 
     /**
-     * Lists all News models.
+     * Lists all Newstags models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new NewsSearch();
+    //  print_r(News::find(1)->one()->getnewstags()->with('category')->with('news')->all());
+        $searchModel = new NewstagsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $model = new News();
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'model' => $model,
         ]);
     }
 
     /**
-     * Displays a single News model.
+     * Displays a single Newstags model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -80,28 +60,25 @@ class NewsController extends Controller
     }
 
     /**
-     * Creates a new News model.
+     * Creates a new Newstags model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new News();
-        if ($model->load(Yii::$app->request->post())) {
-            $model->user_id = Yii::$app->user->id;
-            if($model->save()){
-              return $this->redirect(['view', 'id' => $model->id]);
-            }
+        $model = new Newstags();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
-        $categories = Category::find()->select(['name', 'id'])->indexBy('id')->column();
+
         return $this->render('create', [
             'model' => $model,
-            'categories' => $categories,
         ]);
     }
 
     /**
-     * Updates an existing News model.
+     * Updates an existing Newstags model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -111,22 +88,17 @@ class NewsController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->user_id = Yii::$app->user->id;
-            Newstags::deleteAll(['news_id' => $model->id]);
-            if($model->save()){
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-            }
         }
-        $categories = Category::find()->select(['name', 'id'])->indexBy('id')->column();
+
         return $this->render('update', [
             'model' => $model,
-            'categories' => $categories,
         ]);
     }
 
     /**
-     * Deletes an existing News model.
+     * Deletes an existing Newstags model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -140,15 +112,15 @@ class NewsController extends Controller
     }
 
     /**
-     * Finds the News model based on its primary key value.
+     * Finds the Newstags model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return News the loaded model
+     * @return Newstags the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = News::findOne($id)) !== null) {
+        if (($model = Newstags::findOne($id)) !== null) {
             return $model;
         }
 

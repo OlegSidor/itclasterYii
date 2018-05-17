@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\News */
+/* @var $model app\models\Newstags */
 
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'News', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Newstags', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="news-view">
+<div class="newstags-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,23 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'title',
-            'content:ntext',
-            [
-              'attribute' => 'user_id',
-              'value' => $model->user->username,
-            ],
-            [
-              'attribute' => 'category_id',
-              'value' => function($dataProvider)
-              {
-               $arr = array();
-                foreach ($dataProvider->tags as $one) {
-                  $arr[] = $one->category->name;
-                }
-                return(implode(',',$arr));
-              },
-            ],
+            'category_id',
+            'news_id',
         ],
     ]) ?>
 

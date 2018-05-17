@@ -11,6 +11,7 @@ use Yii;
  * @property string $name
  *
  * @property News[] $news
+ * @property Newstags[] $newstags
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -46,8 +47,4 @@ class Category extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCategory()
-    {
-        return $this->hasMany(News::className(), ['category' => 'name']);
-    }
 }

@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use app\models\News;
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\admin\models\NewsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -27,16 +27,23 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'content:ntext',
             [
-              'label' => 'Author',
               'attribute' => 'user_id',
               'value' => 'user.username'
             ],
             [
-              'label' => 'Category',
               'attribute' => 'category_id',
-              'value' => 'category.name'
+              'value' => function($dataProvider)
+              {
+               $arr = array();
+                foreach ($dataProvider->tags as $one) {
+                  $arr[] = $one->category->name;
+                }
+                return(implode(',',$arr));
+              },
             ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    ]);
+     ?>
+
 </div>

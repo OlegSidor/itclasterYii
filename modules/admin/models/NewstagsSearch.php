@@ -5,12 +5,12 @@ namespace app\modules\admin\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Category;
+use app\models\Newstags;
 
 /**
- * CategorySearch represents the model behind the search form of `app\models\Category`.
+ * NewstagsSearch represents the model behind the search form of `app\models\Newstags`.
  */
-class CategorySearch extends Category
+class NewstagsSearch extends Newstags
 {
     /**
      * @inheritdoc
@@ -18,8 +18,7 @@ class CategorySearch extends Category
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['name'], 'safe'],
+            [['id','category_id', 'news_id'], 'integer'],
         ];
     }
 
@@ -41,7 +40,7 @@ class CategorySearch extends Category
      */
     public function search($params)
     {
-        $query = Category::find()->with(['tags']);
+        $query = Newstags::find()->with(['news','category']);
 
         // add conditions that should always apply here
 
@@ -60,9 +59,9 @@ class CategorySearch extends Category
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'category_id' => $this->category_id,
+            'news_id' => $this->news_id,
         ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

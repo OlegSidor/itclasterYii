@@ -1,11 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-
 /* @var $this yii\web\View */
 /* @var $model app\models\News */
 
-$this->title = 'Update News: {nameAttribute}';
+$this->title = 'Update News: '.$model->title;
 $this->params['breadcrumbs'][] = ['label' => 'News', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
@@ -17,6 +16,8 @@ $this->params['breadcrumbs'][] = 'Update';
     <?= $this->render('_form', [
         'model' => $model,
         'categories' => $categories,
-    ]) ?>
+    ]);
+    ?>
+
 
 </div>

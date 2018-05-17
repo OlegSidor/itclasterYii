@@ -43,9 +43,10 @@ class NewsSearch extends News
      */
     public function search($params)
     {
-        $query = News::find()->with(['user','category']);
-        $query->joinWith(['category']);
+        $query = News::find()->with(['user','tags']);
+        $query->joinWith(['tags']);
         $query->joinWith(['user']);
+        $query->joinWith(['tags.category']);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
