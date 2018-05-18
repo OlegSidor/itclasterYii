@@ -67,9 +67,14 @@ class NewsSearch extends News
         ]);
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'content', $this->content])
-            ->andFilterWhere(['like', 'category.name', $this->category_id])
-            ->andFilterWhere(['like', 'user.username', $this->user_id]);
-
+            ->andFilterWhere(['like', 'user.username', $this->user_id])
+           ->andFilterWhere(['like', 'category.name', $this->category_id]);
+            // if(!empty($this->category_id)){
+            //   $ctgarray = explode(',',$this->category_id);
+            //   foreach ($ctgarray as $one) {
+            //     $query->orFilterWhere(['like', 'category.name', $one]);
+            //   }
+            // }
         return $dataProvider;
     }
 }
